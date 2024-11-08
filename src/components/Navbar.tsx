@@ -56,17 +56,15 @@ const NavBar: React.FC = () => {
           </Nav>
           {/* Right-aligned links */}
           <Nav className="ms-auto d-flex align-items-center">
+            <Col>
+              <NavSearchBar />
+            </Col>
             {currentUser && (
-              <>
-                <Col>
-                  <NavSearchBar />
-                </Col>
-                <Nav.Link id="profile-nav" href="/profile" active={pathName === '/profile'} className="d-flex align-items-center">
+              <Nav.Link id="profile-nav" href="/profile" active={pathName === '/profile'} className="d-flex align-items-center">
                   My Profile
                   {' '}
                   <PersonCircle size={20} className="ms-2" />
-                </Nav.Link>
-              </>
+              </Nav.Link>
             )}
           </Nav>
           <Nav>
