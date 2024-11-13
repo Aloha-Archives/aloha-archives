@@ -14,7 +14,7 @@ interface DeleteDatasetButtonProps {
   isFavoritesContext: boolean; // Determines which delete action to perform
 }
 
-const DeleteDatasetButton: React.FC<DeleteDatasetButtonProps> = ({ userId, datasetId, onDeleteSuccess, isFavoritesContext = false }) => {
+const DeleteButton: React.FC<DeleteDatasetButtonProps> = ({ userId, datasetId, onDeleteSuccess, isFavoritesContext = false }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = async () => {
@@ -64,4 +64,4 @@ const DeleteDatasetButton: React.FC<DeleteDatasetButtonProps> = ({ userId, datas
   );
 };
 
-export default DeleteDatasetButton;
+export default DeleteButton;

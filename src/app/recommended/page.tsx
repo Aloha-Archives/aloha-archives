@@ -1,5 +1,3 @@
-// src/app/recommendations/page.tsx
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -14,16 +12,14 @@ type Recommendation = {
 };
 
 const RecommendationsDisplay = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [persona, setPersona] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPersonaAndRecommendations() {
       if (!session?.user?.email) {
         console.error('User email not found in session');
-        setLoading(false);
         return;
       }
 
@@ -38,7 +34,6 @@ const RecommendationsDisplay = () => {
 
         if (!personaData.persona) {
           console.error('Persona not found');
-          setLoading(false);
           return;
         }
 
@@ -49,12 +44,10 @@ const RecommendationsDisplay = () => {
         const recommendationsResponse = await fetch(`/api/getRecommendations?persona=${currentPersona}`);
         const recommendationsData = await recommendationsResponse.json();
 
-        console.log('API Response for persona:', currentPersona, recommendationsData); // Debug log
+        console.log('API Response for persona:', currentPersona, recommendationsData);
         setRecommendations(recommendationsData);
       } catch (error) {
         console.error('Error fetching persona or recommendations:', error);
-      } finally {
-        setLoading(false);
       }
     }
 
@@ -63,8 +56,12 @@ const RecommendationsDisplay = () => {
     }
   }, [session, persona]);
 
-  if (loading) {
+  if (status === 'loading') {
     return <p className="text-contrast">Loading...</p>;
+  }
+
+  if (!session) {
+    return <p className="text-contrast">You must be logged in to see recommendations.</p>;
   }
 
   return (
@@ -72,7 +69,13 @@ const RecommendationsDisplay = () => {
       <h1 className="text-contrast">Recommended Datasets:</h1>
       <Row>
         {recommendations.map((rec) => (
-          <DatasetCard key={rec.dataset.id} dataset={rec.dataset} />
+          <DatasetCard
+            key={rec.dataset.id}
+            dataset={rec.dataset}
+            userId={session.user?.id || ''}
+            isFavoritesContext={false}
+            onRemoveFromFavorites={() => {}}
+          />
         ))}
       </Row>
     </Container>

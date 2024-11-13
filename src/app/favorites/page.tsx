@@ -11,7 +11,7 @@ interface CustomUser {
   image?: string | null;
 }
 
-export default async function Page() {
+export default async function favoriteDatasetsPage() {
   // Fetch session and typecast the user as CustomUser
   const session = await getServerSession(authOptions) as { user: CustomUser } | null;
 
@@ -19,12 +19,12 @@ export default async function Page() {
     return notFound(); // Return 404 if no user is found
   }
 
-  const userId = parseInt(session.user.id, 10);
+  const userId = session.user.id;
 
   // Fetch the favorite datasets for the authenticated user
   const userWithFavorites = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: parseInt(userId, 10),
     },
     select: {
       favorites: {
@@ -48,7 +48,7 @@ export default async function Page() {
 
   return (
     <div>
-      <ListFavoriteDatasetsPage datasets={datasets} />
+      <ListFavoriteDatasetsPage userId={userId} datasets={datasets} />
     </div>
   );
 }
