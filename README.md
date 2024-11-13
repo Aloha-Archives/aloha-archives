@@ -40,4 +40,3 @@ Developers who are interested in running our project locally must have Next.js a
 Then set up your .env.local file in the root of the project with the PostgreSQL connection string: `DATABASE_URL=postgresql://user:password@localhost:5432/dbname` and run database migrations with `npx prisma migrate reset`
 4. Run the Project Locally with `npm run dev`
 5. Open http://localhost:3000 to view the running local application.
- 
