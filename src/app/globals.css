@@ -268,3 +268,7 @@ footer {
   border: none !important;
 }
 
+#persona-stuff-nav {
+  color: var(--teal) !important;
+  font-weight: bold;
+}
