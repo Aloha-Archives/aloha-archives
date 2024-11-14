@@ -98,6 +98,11 @@ const PersonaForm = () => {
       <h1 className="text-contrast">Persona Quiz</h1>
       <Card>
         <Card.Body>
+          <Container className="p-2">
+            <h4>
+              Take this quiz to find your persona and get recommendations!
+            </h4>
+          </Container>
           <Form onSubmit={handleSubmit(onSubmit)}>
             {/* Goal Question */}
             <Row className={formPadding}>
@@ -216,7 +221,7 @@ const PersonaForm = () => {
             <strong>
               {personaDisplayNames[persona as PersonaKey]}
             </strong>
-            !
+            ! Go to the &apos;Recommended&apos; tab to see personalized datasets.
           </Alert>
         ) : (
           ''
