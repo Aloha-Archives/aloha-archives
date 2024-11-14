@@ -1,3 +1,4 @@
+// Used to check password hashing in the database
 const bcrypt = require('bcrypt');
 
 async function generateHash() {
