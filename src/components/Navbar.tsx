@@ -36,6 +36,11 @@ const NavBar: React.FC = () => {
             <Nav.Link id="datasets-nav" href="/results" key="results" active={pathName === '/results'}>
               Datasets
             </Nav.Link>
+            {!currentUser && (
+            <Nav.Link id="login-in-message-link" href="/auth/signin" key="log-in" active={pathName === '/auth/signin'}>
+              Log in or sign up to get personalized results!
+            </Nav.Link>
+            )}
             {currentUser
               ? [
                   <Nav.Link id="persona-stuff-nav" href="/persona-quiz" key="persona" active={pathName === '/persona-quiz'}>

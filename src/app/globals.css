@@ -272,3 +272,7 @@ footer {
   color: var(--teal) !important;
   font-weight: bold;
 }
+
+#login-in-message-link {
+  color: var(--teal) !important;
+}
