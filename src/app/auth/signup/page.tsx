@@ -48,7 +48,7 @@ const SignUp = () => {
       <Container>
         <Row className="justify-content-center">
           <Col xs={5}>
-            <h1 className="text-center">Sign Up</h1>
+            <h1 className="text-center text-contrast">Sign Up</h1>
             <Card>
               <Card.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
