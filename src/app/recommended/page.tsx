@@ -81,7 +81,7 @@ const RecommendationsDisplay = () => {
   return (
     <Container id="landing-page" fluid className="py-3">
       <h2 className="text-contrast">
-        Current Persona:
+        Currently:
         {' '}
         {persona ? personaDisplayNames[persona as PersonaKey] : 'No persona assigned yet'}
       </h2>
