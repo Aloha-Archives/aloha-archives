@@ -220,12 +220,12 @@ export default function DatasetPageWrapper({ dataset, userId, initialIsFavorite 
       {/* Favorite Button */}
       {userId !== null && (
         <div className="favorite-section d-flex justify-content-center align-items-center mt-4">
-          <span className="me-2">{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</span>
+          <span className="me-2">{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
           <button
             type="button"
             className="favorite-button"
             onClick={handleFavoriteToggle}
-            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            aria-label={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           >
             <svg
               width="24"

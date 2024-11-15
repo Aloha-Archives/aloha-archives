@@ -48,7 +48,7 @@ const SearchBar = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleEnterPress}
-          placeholder="Search..."
+          placeholder="Search for datasets..."
         />
         <InputGroup.Text>
           <Button id="searchIcon" onClick={handleSearch}>

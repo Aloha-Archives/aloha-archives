@@ -3,7 +3,7 @@ import React from 'react';
 
 function TermsOfUse() {
   return (
-    <div className="text-contrast">
+    <div>
       <h1>Terms of Use Policy for Aloha Archives</h1>
 
       {/* Definitions Section */}

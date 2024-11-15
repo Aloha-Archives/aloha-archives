@@ -26,6 +26,9 @@ const Explore = () => {
             height={450}
             layout="fixed" // or "intrinsic" or "responsive"
           />
+          <p className="mb-5 fs-4 text-contrast" style={{ color: 'seashell' }}>
+            Hawai&lsquo;i&apos;s data, your way—simple, smart, visual.
+          </p>
         </Col>
       </Row>
       <Row>

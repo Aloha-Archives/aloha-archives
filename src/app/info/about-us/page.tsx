@@ -1,7 +1,10 @@
 import AboutUsText from '@/components/text/AboutUsText';
+import { Container } from 'react-bootstrap';
 
 const AboutUs = () => (
-  <AboutUsText />
+  <Container className="info-container">
+    <AboutUsText />
+  </Container>
 );
 
 export default AboutUs;
