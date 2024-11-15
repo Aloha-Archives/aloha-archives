@@ -20,10 +20,10 @@ const NavBar: React.FC = () => {
       <Container>
         <Navbar.Brand href="/">
           <Image
-            src="/Seal_of_the_State_of_Hawaii.png"
-            alt="Hawaii State Seal"
-            width={100}
-            height={100}
+            src="/Logo.png"
+            alt="Aloha Archives Logo"
+            width={120}
+            height={120}
             className="d-inline-block align-top"
           />
         </Navbar.Brand>
