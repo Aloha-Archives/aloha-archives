@@ -219,7 +219,7 @@ const ResultsPage = () => {
                   </button>
                 ))
               ) : (
-                <p className="ps-5 text-contrast">No results found.</p>
+                <p className="ps-5 text-contrast">Loading...</p>
               )}
             </Row>
           </Col>

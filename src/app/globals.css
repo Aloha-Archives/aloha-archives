@@ -11,7 +11,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: var(--montserrat);
-  background-image: url('/Background.jpg'); /* Replace with the correct file name */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/Background.jpeg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -38,6 +38,7 @@ body::before {
   --red: #d32f2f; /* Bright red */
   --black: #212121; /* Deep black */
   --white: #ffffff; /* Pure white for contrast */
+  --orange: #ff7848;
   --sand: #fef9d1;
   --teal: #50d8d7;
   --blue: #547aa5;
@@ -87,9 +88,8 @@ input:focus,
   border-radius: 50px;
   padding: 10px 20px;
   width: 100%;
-  background-color: var(--teal);
-  color: black;
-  border-color: var(seashell);
+  background-color: var(--orange);
+  color: white;
   border: none;
   font-size: 20px;
 }
@@ -187,7 +187,7 @@ footer {
 
 .dataset-table-container {
   background-color: white;
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 3rem;
 }
