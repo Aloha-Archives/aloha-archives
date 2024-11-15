@@ -1,5 +1,7 @@
+import { Container } from 'react-bootstrap';
+
 const AboutUsText = () => (
-  <div>
+  <Container className="info-container">
     <h1>About Us</h1>
     <p>
       We are a team of students in the Computer Science department at the University of Hawaii.
@@ -9,7 +11,7 @@ const AboutUsText = () => (
       head banging one the table) did we finally arrive at (the much catchier) Aloha Archives,
       thanks to a moment of inspiration by Shaelyn. We have carried the name with us ever since.
     </p>
-  </div>
+  </Container>
 );
 
 export default AboutUsText;

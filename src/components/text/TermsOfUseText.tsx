@@ -1,9 +1,10 @@
 /* eslint-disable max-len */
 import React from 'react';
+import { Container } from 'react-bootstrap';
 
 function TermsOfUse() {
   return (
-    <div>
+    <Container className="info-container">
       <h1>Terms of Use Policy for Aloha Archives</h1>
 
       {/* Definitions Section */}
@@ -280,7 +281,7 @@ function TermsOfUse() {
         <p>By phone: (808) 586-6000</p>
         <p>By mail: Office of Enterprise Technology Services 1151 Punchbowl Street, Room B10 Honolulu, Hawaii 96813</p>
       </section>
-    </div>
+    </Container>
   );
 }
 
