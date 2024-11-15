@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+
 'use client';
 
 import { useState } from 'react';
@@ -9,7 +11,7 @@ import { PersonaQuizSchema } from '@/lib/validationSchemas';
 import { addPersonaQuizResponse, updateUserPersona } from '@/lib/dbActions';
 import { getSession } from 'next-auth/react';
 
-const PersonaForm = () => {
+const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
   const [persona, setPersona] = useState<string | null>(null);
   const formPadding = 'py-1';
 
@@ -87,6 +89,11 @@ const PersonaForm = () => {
       await updateUserPersona(userEmail, topPersona); // Update user persona in profile
       swal('Success!', `You are a ${personaDisplayNames[topPersona]}!`, 'success');
       reset(); // Reset form
+
+      // Call the parent callback if provided
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
     } catch (error) {
       console.error(error);
       swal('Error!', 'Failed to save response. Please try again.', 'error');
@@ -216,12 +223,8 @@ const PersonaForm = () => {
         </Card.Body>
         {persona ? (
           <Alert variant="success">
-            You have been assigned the persona:
-            {' '}
-            <strong>
-              {personaDisplayNames[persona as PersonaKey]}
-            </strong>
-            ! Go to the &apos;Recommended&apos; tab to see personalized datasets.
+            You have been assigned the persona: <strong>{personaDisplayNames[persona as PersonaKey]}</strong>!
+            Explore <strong>below</strong> for Recommended datasets.
           </Alert>
         ) : (
           ''

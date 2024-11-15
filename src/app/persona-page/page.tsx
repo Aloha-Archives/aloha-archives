@@ -57,7 +57,7 @@ const PersonaPage = () => {
 
   const handleRetakeQuiz = () => {
     // Redirect to the persona quiz page
-    router.push('/persona-quiz');
+    router.push('/recommended');
   };
 
   return (

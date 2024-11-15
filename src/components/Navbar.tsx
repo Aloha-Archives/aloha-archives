@@ -22,8 +22,8 @@ const NavBar: React.FC = () => {
           <Image
             src="/Logo.png"
             alt="Aloha Archives Logo"
-            width={120}
-            height={120}
+            width={100}
+            height={100}
             className="d-inline-block align-top"
           />
         </Navbar.Brand>
@@ -43,9 +43,6 @@ const NavBar: React.FC = () => {
             )}
             {currentUser
               ? [
-                  <Nav.Link id="persona-stuff-nav" href="/persona-quiz" key="persona" active={pathName === '/persona-quiz'}>
-                    Persona Quiz
-                  </Nav.Link>,
                   <Nav.Link id="favorites" href="/favorites" key="favorites" active={pathName === '/favorites'}>
                     Favorites
                   </Nav.Link>,
