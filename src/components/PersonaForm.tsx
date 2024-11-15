@@ -87,7 +87,7 @@ const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
       const response = { ...data, email: userEmail, assignedPersona: topPersona };
       await addPersonaQuizResponse(response); // Save quiz response
       await updateUserPersona(userEmail, topPersona); // Update user persona in profile
-      swal('Success!', `You are a ${personaDisplayNames[topPersona]}!`, 'success');
+      swal('Success!', `You have been assigned: ${personaDisplayNames[topPersona]}!`, 'success');
       reset(); // Reset form
 
       // Call the parent callback if provided
@@ -102,12 +102,12 @@ const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
 
   return (
     <Container>
-      <h1 className="text-contrast">Persona Quiz</h1>
+      <h1 className="text-contrast">Find Your Data Profile</h1>
       <Card>
         <Card.Body>
           <Container className="p-2">
             <h4>
-              Take this quiz to find your persona and get recommendations!
+              Take this quiz to find recommendations based on your preferences!
             </h4>
           </Container>
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -223,7 +223,7 @@ const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
         </Card.Body>
         {persona ? (
           <Alert variant="success">
-            You have been assigned the persona: <strong>{personaDisplayNames[persona as PersonaKey]}</strong>!
+            You have been assigned: <strong>{personaDisplayNames[persona as PersonaKey]}</strong>!
             Explore <strong>below</strong> for Recommended datasets.
           </Alert>
         ) : (
