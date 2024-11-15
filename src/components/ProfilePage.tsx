@@ -12,7 +12,7 @@ const ProfilePage = () => (
           <Link className="no-underline" href="/recommended" passHref>
             <Card style={{ width: '200px', height: '200px' }} className="text-center">
               <Card.Body>
-                <Card.Title style={{ fontSize: '1.5rem' }}>Recommended</Card.Title>
+                <Card.Title style={{ fontSize: '1.3rem' }}>Recommended</Card.Title>
                 <BarChartFill size={100} className="mt-3" />
               </Card.Body>
             </Card>
