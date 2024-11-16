@@ -14,6 +14,7 @@ const ResultsPage = () => {
   const [filteredResults, setFilteredResults] = useState<any[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
   const [orgs, setOrgs] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const toggleMenu1 = () => setIsOpen1(!isOpen1);
   const toggleMenu2 = () => setIsOpen2(!isOpen2);
@@ -48,6 +49,7 @@ const ResultsPage = () => {
         && (org ? item.org === org : true),
     );
     setFilteredResults(results);
+    setIsLoading(false);
   };
 
   const fetchDatasets = async (query: string, topic: string, org: string) => {
@@ -182,7 +184,8 @@ const ResultsPage = () => {
               <h1 className="ms-3 text-contrast">Results</h1>
             </Row>
             <Row>
-              {filteredResults.length > 0 ? (
+              {isLoading && <p className="ps-5 text-contrast">Loading...</p>}
+              {!isLoading && filteredResults.length > 0 && (
                 filteredResults.map((item) => (
                   <button
                     type="button"
@@ -218,8 +221,9 @@ const ResultsPage = () => {
                     </Card>
                   </button>
                 ))
-              ) : (
-                <p className="ps-5 text-contrast">Loading...</p>
+              )}
+              {!isLoading && filteredResults.length === 0 && (
+                <p className="ps-5 text-contrast">No results found.</p>
               )}
             </Row>
           </Col>
