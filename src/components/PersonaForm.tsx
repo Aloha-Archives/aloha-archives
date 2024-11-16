@@ -121,11 +121,11 @@ const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
                     className={`form-control ${errors.goal ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select an option</option>
-                    <option value="To educate others">To educate others with reliable data</option>
-                    <option value="To gather information for research">To gather information for research</option>
-                    <option value="To inform the public">To inform the public or create content</option>
-                    <option value="To support strategic decisions">To support strategic decisions in a business or organization</option>
-                    <option value="To support community initiatives">To support community initiatives</option>
+                    <option value="To educate others">To educate others with reliable data.</option>
+                    <option value="To gather information for research">To gather information for research.</option>
+                    <option value="To inform the public">To inform the public or create content.</option>
+                    <option value="To support strategic decisions">To support strategic decisions in a business or organization.</option>
+                    <option value="To support community initiatives">To support community initiatives.</option>
                   </Form.Select>
                   <div className="invalid-feedback">{errors.goal?.message}</div>
                 </Form.Group>
@@ -144,8 +144,8 @@ const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
                     <option value="">Select an option</option>
                     <option value="For school projects and study">For a school project or personal study.</option>
                     <option value="To create reports">To create reports, articles, or media content.</option>
-                    <option value="To create lesson plans">For creating lesson plans or curriculum materials</option>
-                    <option value="To support policy decisions">To support policy decisions or government projects</option>
+                    <option value="To create lesson plans">For creating lesson plans or curriculum materials.</option>
+                    <option value="To support policy decisions">To support policy decisions or government projects.</option>
                     <option value="For community projects">To improve local community programs or initiatives.</option>
                   </Form.Select>
                   <div className="invalid-feedback">{errors.usage?.message}</div>
@@ -163,8 +163,8 @@ const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
                     className={`form-control ${errors.comfortLevel ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select an option</option>
-                    <option value="Very comfortable">Very comfortable – I work with data regularly</option>
-                    <option value="Somewhat comfortable">Somewhat comfortable – I have basic data skills</option>
+                    <option value="Very comfortable">Very comfortable – I work with data regularly.</option>
+                    <option value="Somewhat comfortable">Somewhat comfortable – I have basic data skills.</option>
                     <option value="Prefer pre-analyzed information">I’m mostly interested in accessing pre-analyzed information.</option>
                     <option value="Willing to learn">I’d like to learn but am still new to it.</option>
                     <option value="Rely on others to analyze">I rely on others to analyze the data for me.</option>
@@ -184,7 +184,7 @@ const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
                     className={`form-control ${errors.dataType ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select an option</option>
-                    <option value="Population or demographics">Population, demographics, or community data</option>
+                    <option value="Population or demographics">Population, demographics, or community data.</option>
                     <option value="Economic or financial">Economic, business, or financial data.</option>
                     <option value="Educational or academic">Educational or academic performance data.</option>
                     <option value="Environmental data">Environmental or sustainability data.</option>
