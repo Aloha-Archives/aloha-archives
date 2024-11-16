@@ -34,7 +34,7 @@ const ProfilePage = () => (
             <Card style={{ width: '200px', height: '200px' }} className="text-center">
               <Card.Body className="d-flex flex-column align-items-center justify-content-center">
                 <Card.Title className="no-underline" style={{ fontSize: '1.5rem' }}>
-                  My Persona
+                  My Data Profile
                 </Card.Title>
                 <PersonFill size={100} className="mt-3" />
               </Card.Body>
