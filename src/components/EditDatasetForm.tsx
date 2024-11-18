@@ -18,6 +18,7 @@ type EditableDatasetFields = {
   description: string;
   org: string;
   fileName?: string;
+  date: string;
 };
 
 const EditDatasetForm = ({ dataset }: { dataset: EditableDatasetFields }) => {

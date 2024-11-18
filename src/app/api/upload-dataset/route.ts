@@ -6,6 +6,7 @@ import uploadDataset from '@/lib/dbActions';
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
+  const date = formData.get('date') as string;
   const file = formData.get('file') as File;
   const name = formData.get('name') as string;
   const url = formData.get('url') as string;
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
   const fileName = file.name;
 
   try {
-    await uploadDataset({ file, name, url, fileName, topic, description, organization, userId });
+    await uploadDataset({ date, file, name, url, fileName, topic, description, organization, userId });
     return NextResponse.json({ message: 'Dataset uploaded successfully' });
   } catch (error) {
     console.error('Error uploading dataset:', error);
