@@ -28,11 +28,25 @@ export default async function DatasetPage({ params }: { params: { id: string | s
     const userId = session?.user?.id ? Number(session.user.id) : null;
     console.log('Passing userId to DatasetPageWrapper:', userId); // Confirm userId is available
 
+    let isFavorite = false;
+    if (userId) {
+      const userWithFavorites = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          favorites: {
+            where: { id },
+            select: { id: true },
+          },
+        },
+      });
+      isFavorite = (userWithFavorites?.favorites?.length ?? 0) > 0; // Check if there are any favorites matching the dataset id
+    }
+
     // Add type check for csvData property to ensure it is an array of objects
     const csvData = Array.isArray(dataset.csvData) ? (dataset.csvData as { [key: string]: string | number }[]) : [];
 
     // Pass dataset and userId to the client component
-    return <DatasetPageWrapper dataset={{ ...dataset, csvData }} userId={userId} />;
+    return <DatasetPageWrapper dataset={{ ...dataset, csvData }} userId={userId} initialIsFavorite={isFavorite} />;
   } catch (error) {
     console.error('Error fetching dataset:', error);
     return notFound();

@@ -39,8 +39,8 @@ const SignUp = () => {
   const onSubmit = async (data: SignUpForm) => {
     // console.log(JSON.stringify(data, null, 2));
     await createUser(data);
-    // After creating, signIn with redirect to the add page
-    await signIn('credentials', { callbackUrl: '/add', ...data });
+    // After creating, signIn with redirect to Recommendations
+    await signIn('credentials', { callbackUrl: '/recommended', ...data });
   };
 
   return (
@@ -48,7 +48,7 @@ const SignUp = () => {
       <Container>
         <Row className="justify-content-center">
           <Col xs={5}>
-            <h1 className="text-center">Sign Up</h1>
+            <h1 className="text-center text-contrast">Sign Up</h1>
             <Card>
               <Card.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>

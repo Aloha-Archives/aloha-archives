@@ -8,10 +8,12 @@ const Footer = () => (
         <Col lg={6} md={12} className="text-center p-3">
           <Link href="/info/terms-of-use">Terms of Use</Link>
           <br />
+          <br />
           <Link href="/info/privacy-policy">Privacy Policy</Link>
         </Col>
         <Col lg={6} md={12} className="text-center p-3">
           <Link href="/info/about-us">About Us</Link>
+          <br />
           <br />
           <Link href="/info/contact-us">Contact Us</Link>
         </Col>

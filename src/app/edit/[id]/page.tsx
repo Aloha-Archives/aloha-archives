@@ -34,7 +34,7 @@ export default async function EditDatasetPage({ params }: { params: { id: string
 
   return (
     <main>
-      <h1>Edit Dataset</h1>
+      <h1 className="text-contrast">Edit Dataset</h1>
       <EditDatasetForm dataset={dataset} />
     </main>
   );

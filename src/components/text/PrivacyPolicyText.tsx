@@ -1,5 +1,7 @@
+import { Container } from 'react-bootstrap';
+
 const PrivacyPolicyText = () => (
-  <div className="text-contrast">
+  <Container className="info-container">
     <h1>Privacy Policy</h1>
     <p>
       By visiting and using this website, its subpages, and content, you are agreeing to our Terms of Access and Use.
@@ -103,7 +105,7 @@ const PrivacyPolicyText = () => (
       <a href="https://www.hawaii.gov/oip" target="_blank" rel="noopener noreferrer">www.hawaii.gov/oip</a>
       .
     </p>
-  </div>
+  </Container>
 );
 
 export default PrivacyPolicyText;

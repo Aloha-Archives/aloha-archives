@@ -24,9 +24,10 @@ interface Dataset {
 interface DatasetPageWrapperProps {
   dataset: Dataset;
   userId: number | null;
+  initialIsFavorite: boolean;
 }
 
-export default function DatasetPageWrapper({ dataset, userId }: DatasetPageWrapperProps) {
+export default function DatasetPageWrapper({ dataset, userId, initialIsFavorite }: DatasetPageWrapperProps) {
   console.log('Received userId:', userId);
   const variables = Array.isArray(dataset.csvData) && dataset.csvData.length > 0 ? Object.keys(dataset.csvData[0]) : [];
   const [chartType, setChartType] = useState<'histogram' | 'scatterplot'>('histogram');
@@ -35,7 +36,7 @@ export default function DatasetPageWrapper({ dataset, userId }: DatasetPageWrapp
   const [yVariable, setYVariable] = useState<string>(variables[1] ?? '');
   const [chartData, setChartData] = useState<number[]>([]);
   const [scatterData, setScatterData] = useState<Array<[number, number]>>([]);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
 
   // Fetch favorite status on mount
   useEffect(() => {
@@ -219,12 +220,12 @@ export default function DatasetPageWrapper({ dataset, userId }: DatasetPageWrapp
       {/* Favorite Button */}
       {userId !== null && (
         <div className="favorite-section d-flex justify-content-center align-items-center mt-4">
-          <span className="me-2">{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</span>
+          <span className="me-2">{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
           <button
             type="button"
             className="favorite-button"
             onClick={handleFavoriteToggle}
-            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            aria-label={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           >
             <svg
               width="24"

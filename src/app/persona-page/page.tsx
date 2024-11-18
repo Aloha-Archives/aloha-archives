@@ -57,28 +57,28 @@ const PersonaPage = () => {
 
   const handleRetakeQuiz = () => {
     // Redirect to the persona quiz page
-    router.push('/persona-quiz');
+    router.push('/recommended');
   };
 
   return (
     <Container>
-      <h1 className="text-contrast mt-3">User Persona</h1>
+      <h1 className="text-contrast mt-3">Data Profile</h1>
       <Card className="p-4">
         <Row>
           <Col>
             {persona ? (
               <Alert variant="info">
-                <strong>Current Persona: </strong>
+                <strong>Current Data Profile: </strong>
                 {personaOptions.find((opt) => opt.key === persona)?.label || persona}
               </Alert>
             ) : (
-              <Alert variant="warning">No persona assigned.</Alert>
+              <Alert variant="warning">No data profile.</Alert>
             )}
             <Form.Group controlId="selectPersona">
-              <Form.Label>Choose Persona</Form.Label>
+              <Form.Label>Choose Data Profile</Form.Label>
               <Form.Select value={persona || ''} onChange={handlePersonaChange} disabled={isUpdating}>
                 <option value="" disabled>
-                  Select your persona
+                  Select your data profile
                 </option>
                 {personaOptions.map((option) => (
                   <option key={option.key} value={option.key}>

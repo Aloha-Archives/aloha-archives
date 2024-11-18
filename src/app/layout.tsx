@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 
 import type { Metadata } from 'next';
-import { Hind } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from '@/components/Footer';
@@ -9,7 +9,7 @@ import NavBar from '@/components/Navbar';
 import LayoutWrapper from '@/components/LayoutWrapper';
 import Providers from './providers';
 
-const hind = Hind({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
+const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
 export const metadata: Metadata = {
   title: 'Aloha Archives',
@@ -21,7 +21,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const classString = `${hind.className} wrapper`;
+  const classString = `${montserrat.className} wrapper`;
   return (
     <html lang="en">
       <body className={classString}>

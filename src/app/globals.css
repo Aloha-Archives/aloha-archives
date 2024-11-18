@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -9,8 +10,8 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: var(--hind);
-  background-image: url('/Background.jpg'); /* Replace with the correct file name */
+  font-family: var(--montserrat);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/Background.jpeg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -37,17 +38,19 @@ body::before {
   --red: #d32f2f; /* Bright red */
   --black: #212121; /* Deep black */
   --white: #ffffff; /* Pure white for contrast */
-  --hind: 'Hind', sans-serif;
+  --orange: #ff7848;
+  --sand: #fef9d1;
   --teal: #50d8d7;
   --blue: #547aa5;
   --dark-gray: #4f5165;
   --charcoal: #474044;
   --dark-green: #293132;
   --hind: 'Hind', sans-serif;
+  --montserrat: 'Montserrat', sans-serif;
 }
 
 .custom-navbar {
-  font-family: 'Crimson Text', serif;
+  font-family: 'Montserrat', serif;
   background-color: var(--black);
   color: var(--white);
 }
@@ -56,11 +59,12 @@ body::before {
 .custom-navbar .nav-dropdown-item {
   color: var(--white) !important;
   font-size: 20px;
+  text-align: center;
 }
 
 .custom-navbar .nav-link:hover,
 .custom-navbar .nav-dropdown-item:hover {
-  color: var(--red) !important;
+  color: var(--teal) !important;
 }
 
 .navbar-toggler {
@@ -84,15 +88,15 @@ input:focus,
   border-radius: 50px;
   padding: 10px 20px;
   width: 100%;
-  background-color: white;
-  color: var(--black);
-  border-color: var(seashell);
+  background-color: var(--teal);
+  color: black;
   border: none;
+  font-size: 20px;
 }
 
 .btn.filter-button:hover {
-  background-color: var(--teal);
-  color: white;
+  background-color: var(--orange);
+  color: seashell;
 }
 
 a,
@@ -134,10 +138,9 @@ a,
 }
 
 footer {
-  font-family: 'Playfair Display', serif;
   background-color: var(--black);
   color: var(--white);
-  height: 100px;
+  height: 140px;
 }
 
 footer a {
@@ -146,7 +149,7 @@ footer a {
 }
 
 footer a:hover {
-  color: var(--red);
+  color: var(--teal);
 }
 .custom-navbar,
 footer {
@@ -155,9 +158,10 @@ footer {
   line-height: 1.4;
 }
 #filterMenu {
-  background-color: var(--blue);
+  background-color: rgb(85, 85, 85);
+  border: none;
   color: white;
-  font-family: var(--hind);
+  font-family: var(--montserrat);
 }
 
 .filter-height {
@@ -171,7 +175,7 @@ footer {
 
 #resultsFilterButton.active {
   background-color: var(--blue);
-  border-color: var(--blue);
+  border: none;
   color: white;
 }
 
@@ -183,7 +187,7 @@ footer {
 
 .dataset-table-container {
   background-color: white;
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 3rem;
 }
@@ -268,3 +272,15 @@ footer {
   border: none !important;
 }
 
+#login-in-message-link {
+  color: var(--teal) !important;
+}
+
+.info-container {
+  background-color: white;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}

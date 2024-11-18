@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+
 'use client';
 
 import { useState } from 'react';
@@ -9,7 +11,7 @@ import { PersonaQuizSchema } from '@/lib/validationSchemas';
 import { addPersonaQuizResponse, updateUserPersona } from '@/lib/dbActions';
 import { getSession } from 'next-auth/react';
 
-const PersonaForm = () => {
+const PersonaForm = ({ onSubmitSuccess }: { onSubmitSuccess: () => void }) => {
   const [persona, setPersona] = useState<string | null>(null);
   const formPadding = 'py-1';
 
@@ -85,8 +87,13 @@ const PersonaForm = () => {
       const response = { ...data, email: userEmail, assignedPersona: topPersona };
       await addPersonaQuizResponse(response); // Save quiz response
       await updateUserPersona(userEmail, topPersona); // Update user persona in profile
-      swal('Success!', `You are a ${personaDisplayNames[topPersona]}!`, 'success');
+      swal('Success!', `You have been assigned: ${personaDisplayNames[topPersona]}!`, 'success');
       reset(); // Reset form
+
+      // Call the parent callback if provided
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
     } catch (error) {
       console.error(error);
       swal('Error!', 'Failed to save response. Please try again.', 'error');
@@ -95,9 +102,14 @@ const PersonaForm = () => {
 
   return (
     <Container>
-      <h1 className="text-contrast">Persona Quiz</h1>
+      <h1 className="text-contrast">Find Your Data Profile</h1>
       <Card>
         <Card.Body>
+          <Container className="p-2">
+            <h4>
+              Take this quiz to find recommendations based on your preferences!
+            </h4>
+          </Container>
           <Form onSubmit={handleSubmit(onSubmit)}>
             {/* Goal Question */}
             <Row className={formPadding}>
@@ -109,11 +121,11 @@ const PersonaForm = () => {
                     className={`form-control ${errors.goal ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select an option</option>
-                    <option value="To educate others">To educate others with reliable data</option>
-                    <option value="To gather information for research">To gather information for research</option>
-                    <option value="To inform the public">To inform the public or create content</option>
-                    <option value="To support strategic decisions">To support strategic decisions in a business or organization</option>
-                    <option value="To support community initiatives">To support community initiatives</option>
+                    <option value="To educate others">To educate others with reliable data.</option>
+                    <option value="To gather information for research">To gather information for research.</option>
+                    <option value="To inform the public">To inform the public or create content.</option>
+                    <option value="To support strategic decisions">To support strategic decisions in a business or organization.</option>
+                    <option value="To support community initiatives">To support community initiatives.</option>
                   </Form.Select>
                   <div className="invalid-feedback">{errors.goal?.message}</div>
                 </Form.Group>
@@ -132,8 +144,8 @@ const PersonaForm = () => {
                     <option value="">Select an option</option>
                     <option value="For school projects and study">For a school project or personal study.</option>
                     <option value="To create reports">To create reports, articles, or media content.</option>
-                    <option value="To create lesson plans">For creating lesson plans or curriculum materials</option>
-                    <option value="To support policy decisions">To support policy decisions or government projects</option>
+                    <option value="To create lesson plans">For creating lesson plans or curriculum materials.</option>
+                    <option value="To support policy decisions">To support policy decisions or government projects.</option>
                     <option value="For community projects">To improve local community programs or initiatives.</option>
                   </Form.Select>
                   <div className="invalid-feedback">{errors.usage?.message}</div>
@@ -151,8 +163,8 @@ const PersonaForm = () => {
                     className={`form-control ${errors.comfortLevel ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select an option</option>
-                    <option value="Very comfortable">Very comfortable – I work with data regularly</option>
-                    <option value="Somewhat comfortable">Somewhat comfortable – I have basic data skills</option>
+                    <option value="Very comfortable">Very comfortable – I work with data regularly.</option>
+                    <option value="Somewhat comfortable">Somewhat comfortable – I have basic data skills.</option>
                     <option value="Prefer pre-analyzed information">I’m mostly interested in accessing pre-analyzed information.</option>
                     <option value="Willing to learn">I’d like to learn but am still new to it.</option>
                     <option value="Rely on others to analyze">I rely on others to analyze the data for me.</option>
@@ -172,7 +184,7 @@ const PersonaForm = () => {
                     className={`form-control ${errors.dataType ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select an option</option>
-                    <option value="Population or demographics">Population, demographics, or community data</option>
+                    <option value="Population or demographics">Population, demographics, or community data.</option>
                     <option value="Economic or financial">Economic, business, or financial data.</option>
                     <option value="Educational or academic">Educational or academic performance data.</option>
                     <option value="Environmental data">Environmental or sustainability data.</option>
@@ -211,12 +223,8 @@ const PersonaForm = () => {
         </Card.Body>
         {persona ? (
           <Alert variant="success">
-            You have been assigned the persona:
-            {' '}
-            <strong>
-              {personaDisplayNames[persona as PersonaKey]}
-            </strong>
-            !
+            You have been assigned: <strong>{personaDisplayNames[persona as PersonaKey]}</strong>!
+            Explore <strong>below</strong> for Recommended datasets.
           </Alert>
         ) : (
           ''

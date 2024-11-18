@@ -66,7 +66,12 @@ const TrendingDatasets: React.FC = () => {
               <Row className="justify-content-center text-center">
                 {group.map((dataset) => (
                   <Col key={dataset.id} md={group.length === 2 ? 6 : 4}>
-                    <DatasetCard dataset={dataset} />
+                    <DatasetCard
+                      dataset={dataset}
+                      userId=""
+                      isFavoritesContext={false}
+                      onRemoveFromFavorites={() => {}}
+                    />
                   </Col>
                 ))}
               </Row>

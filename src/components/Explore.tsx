@@ -16,16 +16,19 @@ const Explore = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-1">
       <Row>
         <Col md={8} className="mx-auto text-center">
           <Image
             src="/Logo.png"
             alt="Aloha Archives Logo"
-            width={500}
-            height={450}
+            width={300}
+            height={250}
             layout="fixed" // or "intrinsic" or "responsive"
           />
+          <p className="mb-5 fs-4 text-contrast" style={{ color: 'seashell' }}>
+            Hawai&lsquo;i&apos;s data, your way—simple, smart, visual.
+          </p>
         </Col>
       </Row>
       <Row>

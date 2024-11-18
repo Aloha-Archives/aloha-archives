@@ -13,7 +13,7 @@ interface CustomUser {
   image?: string | null;
 }
 
-export default async function Page() {
+export default async function manageDatasetsPage() {
   // Fetch session and typecast the user as CustomUser
   const session = await getServerSession(authOptions) as { user: CustomUser } | null;
   console.log('Session:', session); // Debugging log
