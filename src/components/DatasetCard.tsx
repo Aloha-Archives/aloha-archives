@@ -26,6 +26,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => (
       width: '18rem',
       marginLeft: '2rem',
       marginBottom: '2rem',
+      height: '330px',
     }}
     onClick={() => (window.location.href = `/dataset/${dataset.id}`)}
   >
