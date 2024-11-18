@@ -188,7 +188,12 @@ const ResultsPage = () => {
               {isLoading && <p className="ps-5 text-contrast">Loading...</p>}
               {!isLoading && filteredResults.length > 0 && (
                 filteredResults.map((item) => (
-                  <DatasetCard dataset={item} />
+                  <DatasetCard
+                    dataset={item.dataset}
+                    isFavoritesContext={item.isFavoritesContext}
+                    userId={item.userId}
+                    onRemoveFromFavorites={item.onRemoveFromFavorites}
+                  />
                 ))
               )}
               {!isLoading && filteredResults.length === 0 && (
