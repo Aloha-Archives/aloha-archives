@@ -9,6 +9,7 @@ interface Dataset {
   topic: string;
   org: string;
   orgIcon: string;
+  date: string;
 }
 
 interface DatasetCardProps {
@@ -39,12 +40,12 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, 
         width: '18rem',
         marginLeft: '2rem',
         marginBottom: '2rem',
-        height: '330px',
+        height: '370px',
       }}
       onClick={() => (window.location.href = `/dataset/${dataset.id}`)}
     >
       <Card className="h-100">
-        <Card.Header style={{ height: '60%' }}>
+        <Card.Header style={{ height: '55%' }}>
           <Container className="d-flex justify-content-center">
             <Card.Img
               variant="top"
@@ -55,11 +56,15 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, 
           </Container>
           <Card.Title className="pt-3">{dataset.name}</Card.Title>
         </Card.Header>
-        <Card.Body style={{ height: '25%' }}>
+        <Card.Body style={{ height: '28%' }}>
           <Card.Text>{dataset.description}</Card.Text>
         </Card.Body>
-        <Card.Footer style={{ height: '15%' }}>
-          <Card.Text>{dataset.topic}</Card.Text>
+        <Card.Footer style={{ height: '17%' }}>
+          <Card.Text>
+            {dataset.topic}
+            <br />
+            {dataset.date}
+          </Card.Text>
         </Card.Footer>
       </Card>
     </button>

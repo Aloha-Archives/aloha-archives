@@ -58,6 +58,7 @@ async function main() {
         orgIcon: data.orgIcon,
         csvData: data.csvData,
         fileName: data.fileName,
+        date: data.date,
         ownerId,
       },
       create: {
@@ -70,6 +71,7 @@ async function main() {
         orgIcon: data.orgIcon,
         csvData: data.csvData,
         fileName: data.fileName,
+        date: data.date,
         ownerId,
       },
     });

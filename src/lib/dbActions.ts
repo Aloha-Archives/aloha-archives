@@ -154,6 +154,7 @@ export const editDataset = async (formData: FormData) => {
         topic: data.topic,
         description: data.description,
         org: data.organization,
+        date: data.date,
         ...(fileName && csvData && { fileName, csvData }), // Only add if both fileName and csvData are provided
       },
     });
@@ -185,6 +186,7 @@ export default async function uploadDataset({
   description,
   organization,
   userId,
+  date,
 }: {
   file: File;
   name: string;
@@ -194,6 +196,7 @@ export default async function uploadDataset({
   description: string;
   organization: string;
   userId: string;
+  date: string;
 }) {
   try {
     // Read and parse CSV file
@@ -214,6 +217,7 @@ export default async function uploadDataset({
         url,
         csvData: parsedDataArray,
         fileName,
+        date,
         ownerId: parseInt(userId, 10),
       },
     });

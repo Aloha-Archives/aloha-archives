@@ -54,6 +54,7 @@ model Dataset {
   orgIcon     String
   csvData     Json?
   fileName    String @default("")
+  date        String
 
   // For users who favorited the dataset
   users User[]

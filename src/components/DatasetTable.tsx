@@ -11,6 +11,7 @@ interface Dataset {
   topic: string;
   description: string;
   org: string;
+  date: string;
 }
 
 interface DatasetTableProps {
