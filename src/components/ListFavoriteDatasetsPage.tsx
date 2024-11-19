@@ -12,6 +12,7 @@ interface Dataset {
   description: string;
   org: string;
   orgIcon: string;
+  date: string;
 }
 
 interface ListFavoriteDatasetsPageProps {

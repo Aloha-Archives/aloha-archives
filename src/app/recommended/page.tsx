@@ -9,7 +9,7 @@ import PersonaForm from '@/components/PersonaForm';
 type Recommendation = {
   id: number;
   persona: string;
-  dataset: { id: string; name: string; description: string; topic: string; org: string; orgIcon: string };
+  dataset: { id: string; name: string; description: string; topic: string; org: string; orgIcon: string; date: string };
 };
 
 type PersonaKey = 'educator' | 'researcher' | 'communityMember' | 'publicInformer' | 'businessDecisionMaker';

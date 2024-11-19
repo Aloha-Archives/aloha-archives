@@ -31,6 +31,7 @@ export default async function manageDatasetsPage() {
       topic: true,
       description: true,
       org: true,
+      date: true,
     },
   });
   console.log('Datasets:', datasets); // Debugging log

@@ -36,6 +36,7 @@ export default async function favoriteDatasetsPage() {
           description: true,
           org: true,
           orgIcon: true,
+          date: true,
         },
       },
     },

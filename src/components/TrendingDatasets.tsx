@@ -11,6 +11,7 @@ interface Dataset {
   topic: string;
   org: string;
   orgIcon: string;
+  date: string;
   viewCount: number;
 }
 
