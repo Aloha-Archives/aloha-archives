@@ -36,13 +36,15 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, 
         padding: 0,
         border: 'none',
         background: 'none',
-        width: '100%',
-        zIndex: 0,
+        width: '18rem',
+        marginLeft: '2rem',
+        marginBottom: '2rem',
+        height: '330px',
       }}
       onClick={() => (window.location.href = `/dataset/${dataset.id}`)}
     >
-      <Card>
-        <Card.Header>
+      <Card className="h-100">
+        <Card.Header style={{ height: '60%' }}>
           <Container className="d-flex justify-content-center">
             <Card.Img
               variant="top"
@@ -53,10 +55,10 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, 
           </Container>
           <Card.Title className="pt-3">{dataset.name}</Card.Title>
         </Card.Header>
-        <Card.Body>
+        <Card.Body style={{ height: '25%' }}>
           <Card.Text>{dataset.description}</Card.Text>
         </Card.Body>
-        <Card.Footer>
+        <Card.Footer style={{ height: '15%' }}>
           <Card.Text>{dataset.topic}</Card.Text>
         </Card.Footer>
       </Card>

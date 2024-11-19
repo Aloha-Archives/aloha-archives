@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import DatasetCard from '@/components/DatasetCard';
 
 const SearchBar = dynamic(() => import('@/components/SearchBar'), { ssr: false });
 
@@ -186,41 +187,17 @@ const ResultsPage = () => {
             <Row>
               {isLoading && <p className="ps-5 text-contrast">Loading...</p>}
               {!isLoading && filteredResults.length > 0 && (
-                filteredResults.map((item) => (
-                  <button
-                    type="button"
-                    key={item.id}
-                    style={{
-                      padding: 0,
-                      border: 'none',
-                      background: 'none',
-                      width: '18rem',
-                      marginLeft: '2rem',
-                      marginBottom: '2rem',
-                    }}
-                    onClick={() => (window.location.href = `/dataset/${item.id}`)}
-                  >
-                    <Card>
-                      <Card.Header>
-                        <Container className="d-flex justify-content-center">
-                          <Card.Img
-                            variant="top"
-                            src={item.orgIcon}
-                            alt={`${item.org} logo`}
-                            style={{ maxWidth: '100px', height: 'auto' }}
-                          />
-                        </Container>
-                        <Card.Title className="pt-3">{item.name}</Card.Title>
-                      </Card.Header>
-                      <Card.Body>
-                        <Card.Text>{item.description}</Card.Text>
-                      </Card.Body>
-                      <Card.Footer>
-                        <Card.Text>{item.topic}</Card.Text>
-                      </Card.Footer>
-                    </Card>
-                  </button>
-                ))
+                filteredResults.map((item) => {
+                  console.log(item);
+                  return (
+                    <DatasetCard
+                      dataset={item}
+                      isFavoritesContext={item.isFavoritesContext}
+                      userId={item.userId}
+                      onRemoveFromFavorites={item.onRemoveFromFavorites}
+                    />
+                  );
+                })
               )}
               {!isLoading && filteredResults.length === 0 && (
                 <p className="ps-5 text-contrast">No results found.</p>
