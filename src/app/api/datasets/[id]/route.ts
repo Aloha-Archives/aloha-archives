@@ -35,6 +35,7 @@ export async function GET() {
         org: true,
         orgIcon: true,
         fileName: true,
+        date: true,
       },
     });
     return NextResponse.json(datasets);
