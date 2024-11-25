@@ -77,7 +77,7 @@ const Explore = () => {
           </h1>
         </Col>
       </Row>
-      <Row>
+      <Row className="mb-3">
         <Col md={8} className="mx-auto">
           <SearchBar />
         </Col>

@@ -179,6 +179,12 @@ footer {
   color: white;
 }
 
+#sortButton.active {
+  background-color: var(--blue);
+  border: none;
+  color: white;
+}
+
 .no-underline {
   text-decoration: none;
 }
@@ -283,6 +289,12 @@ footer {
   padding: 2rem;
   padding-left: 2rem !important;
   padding-right: 2rem !important;
+}
+
+#custom-dropdown {
+  background-color: var(--white);
+  color: var(--black);
+  border: none;
 }
 
 .ml11 {

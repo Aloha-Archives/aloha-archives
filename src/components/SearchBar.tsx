@@ -12,6 +12,7 @@ const SearchBar = () => {
   const [query, setQuery] = React.useState(initialQuery);
   const currentTopic = urlParams.get('topic') || ''; // Get current topic from URL
   const currentOrg = urlParams.get('org') || ''; // Get current org from URL
+  const currentSort = urlParams.get('sort') || ''; // Get current sort from URL
 
   const handleSearch = () => {
     // Construct the new URL with both search and topic params
@@ -19,6 +20,8 @@ const SearchBar = () => {
       currentTopic ? `&topic=${encodeURIComponent(currentTopic)}` : ''
     }${
       currentOrg ? `&org=${encodeURIComponent(currentOrg)}` : ''
+    }${
+      currentSort ? `&sort=${encodeURIComponent(currentSort)}` : ''
     }`;
 
     // Navigate to the new URL
@@ -33,7 +36,7 @@ const SearchBar = () => {
 
   return (
     <Container>
-      <InputGroup className="mb-3">
+      <InputGroup>
         <Form.Control
           type="text"
           value={query}

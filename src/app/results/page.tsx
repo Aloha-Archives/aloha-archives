@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import DatasetCard from '@/components/DatasetCard';
 
 const SearchBar = dynamic(() => import('@/components/SearchBar'), { ssr: false });
@@ -16,6 +16,7 @@ const ResultsPage = () => {
   const [topics, setTopics] = useState<string[]>([]);
   const [orgs, setOrgs] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortCriteria, setSortCriteria] = useState<string>('Name');
 
   const toggleMenu1 = () => setIsOpen1(!isOpen1);
   const toggleMenu2 = () => setIsOpen2(!isOpen2);
@@ -41,23 +42,39 @@ const ResultsPage = () => {
     }
   };
 
-  const filterResults = (query: string, datasets: any[], topic: string, org: string) => {
-    const lowercasedQuery = query.toLowerCase();
-    const results = datasets.filter(
-      (item) => (item.name.toLowerCase().includes(lowercasedQuery)
-          || item.topic.toLowerCase().includes(lowercasedQuery))
-        && (topic ? item.topic === topic : true)
-        && (org ? item.org === org : true),
-    );
-    setFilteredResults(results);
-    setIsLoading(false);
-  };
-
-  const fetchDatasets = async (query: string, topic: string, org: string) => {
+  const fetchDatasets = async (query: string, topic: string, org: string, sortBy: string) => {
     try {
       const response = await fetch('/api/datasets');
       const data = await response.json();
-      filterResults(query, data, topic, org);
+      const filteredData = data.filter(
+        (item: { name: string; topic: string; org: string; }) => (item.name.toLowerCase().includes(query.toLowerCase())
+          || item.topic.toLowerCase().includes(query.toLowerCase()))
+          && (topic ? item.topic === topic : true)
+          && (org ? item.org === org : true),
+      );
+      const sortedData = filteredData.sort(
+        (
+          a: { name: string; org: string; topic: string; date: string; },
+          b: { name: any; org: any; topic: any; date: string; },
+        ) => {
+          if (sortBy === 'Name') {
+            return a.name.localeCompare(b.name);
+          }
+          if (sortBy === 'Organization') {
+            return a.org.localeCompare(b.org);
+          }
+          if (sortBy === 'Topic') {
+            return a.topic.localeCompare(b.topic);
+          }
+          if (sortBy === 'Date') {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          }
+          return 0;
+        },
+      );
+
+      setFilteredResults(sortedData);
+      setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch datasets:', error);
     }
@@ -78,7 +95,7 @@ const ResultsPage = () => {
     }
 
     const query = new URLSearchParams(window.location.search).get('search') || '';
-    fetchDatasets(query, newTopic, selectedOrg);
+    fetchDatasets(query, newTopic, selectedOrg, sortCriteria);
   };
 
   const handleOrgFilter = (org: string) => {
@@ -97,7 +114,36 @@ const ResultsPage = () => {
 
     const query = new URLSearchParams(window.location.search).get('search') || '';
     const topicFromURL = new URLSearchParams(window.location.search).get('topic') || '';
-    fetchDatasets(query, topicFromURL, newOrg);
+    fetchDatasets(query, topicFromURL, newOrg, sortCriteria);
+  };
+
+  const handleSort = (eventKey: string | null) => {
+    if (!eventKey) return;
+    const criteria = eventKey;
+    setSortCriteria(criteria);
+
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set('sort', criteria);
+      window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
+    }
+
+    const sortedResults = [...filteredResults].sort((a, b) => {
+      if (criteria === 'Name') {
+        return a.name.localeCompare(b.name);
+      }
+      if (criteria === 'Organization') {
+        return a.org.localeCompare(b.org);
+      }
+      if (criteria === 'Topic') {
+        return a.topic.localeCompare(b.topic);
+      }
+      if (criteria === 'Date') {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+      return 0;
+    });
+    setFilteredResults(sortedResults);
   };
 
   useEffect(() => {
@@ -110,9 +156,11 @@ const ResultsPage = () => {
         const query = urlParams.get('search') || '';
         const topicFromURL = urlParams.get('topic') || '';
         const orgFromURL = urlParams.get('org') || '';
+        const sortFromURL = urlParams.get('sort') || '';
         setSelectedTopic(topicFromURL);
         setSelectedOrg(orgFromURL);
-        await fetchDatasets(query, topicFromURL, orgFromURL);
+        setSortCriteria(sortFromURL || 'Name');
+        await fetchDatasets(query, topicFromURL, orgFromURL, sortFromURL);
       }
     };
 
@@ -178,8 +226,46 @@ const ResultsPage = () => {
 
           {/* Results Area */}
           <Col md={9} className="mx-auto">
-            <Row>
-              <SearchBar />
+            <Row className="align-items-center">
+              <Col md={10}>
+                <SearchBar />
+              </Col>
+              <Col md={2}>
+                <DropdownButton
+                  onSelect={(eventKey) => handleSort(eventKey)}
+                  title={`Sort By: ${sortCriteria}`}
+                  id="custom-dropdown"
+                >
+                  <Dropdown.Item
+                    eventKey="Name"
+                    active={sortCriteria === 'Name'}
+                    id="sortButton"
+                  >
+                    Name: A-Z
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="Organization"
+                    active={sortCriteria === 'Organization'}
+                    id="sortButton"
+                  >
+                    Organization: A-Z
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="Topic"
+                    active={sortCriteria === 'Topic'}
+                    id="sortButton"
+                  >
+                    Topic: A-Z
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="Date"
+                    active={sortCriteria === 'Date'}
+                    id="sortButton"
+                  >
+                    Date: Newest-Oldest
+                  </Dropdown.Item>
+                </DropdownButton>
+              </Col>
             </Row>
             <Row>
               <h1 className="ms-3 text-contrast">Results</h1>
