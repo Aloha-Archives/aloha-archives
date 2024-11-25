@@ -1,15 +1,12 @@
 import { Container } from 'react-bootstrap';
 
-const ContactUsText = () => (
+const FeedbackText = () => (
   <Container className="info-container">
-    <h1>Contact Us</h1>
+    <h1>Feedback Form</h1>
     <p>
-      If you have any questions or comments, please contact us at
-      {' '}
-      <a href="mailto:alohaarchives@gmail.com">alohaarchives@gmail.com</a>
-      .
+      If you have any feedback, feel free to fill out the form below.
     </p>
-    <p>Feel free to provide your feedback using the form below.</p>
+
     { /* eslint-disable-next-line max-len */ }
     <iframe
       src="https://docs.google.com/forms/d/e/1FAIpQLSf9vFMqi9qQ-Iirv3w-TZXms1KC9UKVVoRt-esB84WGYa_FDw/viewform?embedded=true"
@@ -22,7 +19,8 @@ const ContactUsText = () => (
     >
       Loading…
     </iframe>
+    ;
   </Container>
 );
 
-export default ContactUsText;
+export default FeedbackText;
