@@ -20,7 +20,7 @@ interface DatasetCardProps {
 }
 
 const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, userId, onRemoveFromFavorites }) => (
-  <div style={{ position: 'relative', width: '18rem', marginLeft: '2rem', marginBottom: '2rem' }}>
+  <div style={{ position: 'relative', width: '18rem', margin: '1rem auto' }}>
     {isFavoritesContext && (
       <div style={{ position: 'absolute', top: 10, right: 25, zIndex: 1 }}>
         <DeleteDatasetButton
@@ -37,9 +37,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, 
         padding: 0,
         border: 'none',
         background: 'none',
-        width: '18rem',
-        marginLeft: '2rem',
-        marginBottom: '2rem',
+        width: '100%',
         height: '370px',
       }}
       onClick={() => (window.location.href = `/dataset/${dataset.id}`)}
