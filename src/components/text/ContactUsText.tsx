@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap';
 
 const ContactUsText = () => (
-  <Container className="info-container">
+  <Container className="info-container" style={{ maxWidth: '960px' }}>
     <h1>Contact Us</h1>
     <p>
       If you have any questions or comments, please contact us at
