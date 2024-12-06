@@ -11,43 +11,41 @@ const Explore = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Select the text wrapper
     const textWrapper = document.querySelector('.ml11 .letters');
     if (textWrapper) {
       textWrapper.innerHTML = textWrapper.textContent
         ?.replace(/([\w‘’]+(?:['’]\w+)?|[‘’—,.])/g, "<span class='letter'>$&</span>") || '';
 
-      // Anime.js timeline for the animation
       anime.timeline({ loop: true })
         .add({
           targets: '.ml11 .line',
-          scaleY: [0, 1], // Line grows vertically
+          scaleY: [0, 1],
           opacity: [0.5, 1],
           easing: 'easeOutExpo',
-          duration: 1000, // Adjust the speed of line growth
+          duration: 1000,
         })
         .add({
           targets: '.ml11 .line',
-          translateX: [0, textWrapper.getBoundingClientRect().width + 10], // Line slides across text
+          translateX: [0, textWrapper.getBoundingClientRect().width + 10],
           easing: 'easeOutExpo',
-          duration: 2500, // Slower horizontal slide for more emphasis
-          delay: 200, // Pause before the slide starts
+          duration: 2500,
+          delay: 200,
         })
         .add({
           targets: '.ml11 .letter',
-          opacity: [0, 1], // Letters fade in
-          translateY: ['1.2em', 0], // Letters drop in from above
+          opacity: [0, 1],
+          translateY: ['1.2em', 0],
           easing: 'easeOutExpo',
-          duration: 1000, // Adjust speed for individual letter animations
-          offset: '+=100', // Start while the line is still sliding
-          delay: (el, i) => 40 * i, // Delay between each letter appearance
+          duration: 1000,
+          offset: '+=100',
+          delay: (el, i) => 40 * i,
         })
         .add({
           targets: '.ml11',
-          opacity: [1, 0], // Entire text fades out
-          duration: 1500, // Slow fade-out for readability
+          opacity: [1, 0],
+          duration: 1500,
           easing: 'easeOutExpo',
-          delay: 1000, // Hold text visible for longer before fading out
+          delay: 1000,
         });
     }
   }, []);
