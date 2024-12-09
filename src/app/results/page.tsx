@@ -129,17 +129,29 @@ const ResultsPage = () => {
     }
 
     const sortedResults = [...filteredResults].sort((a, b) => {
-      if (criteria === 'Name') {
+      if (criteria === 'Name A-Z') {
         return a.name.localeCompare(b.name);
       }
-      if (criteria === 'Organization') {
+      if (criteria === 'Name Z-A') {
+        return b.name.localeCompare(a.name);
+      }
+      if (criteria === 'Organization A-Z') {
         return a.org.localeCompare(b.org);
       }
-      if (criteria === 'Topic') {
+      if (criteria === 'Organization Z-A') {
+        return b.org.localeCompare(a.org);
+      }
+      if (criteria === 'Topic A-Z') {
         return a.topic.localeCompare(b.topic);
       }
-      if (criteria === 'Date') {
+      if (criteria === 'Topic Z-A') {
+        return b.topic.localeCompare(a.topic);
+      }
+      if (criteria === 'Date: Recent') {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+      if (criteria === 'Date: Old') {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
       }
       return 0;
     });
@@ -237,32 +249,60 @@ const ResultsPage = () => {
                   id="custom-dropdown"
                 >
                   <Dropdown.Item
-                    eventKey="Name"
-                    active={sortCriteria === 'Name'}
+                    eventKey="Name A-Z"
+                    active={sortCriteria === 'Name A-Z'}
                     id="sortButton"
                   >
                     Name: A-Z
                   </Dropdown.Item>
                   <Dropdown.Item
-                    eventKey="Organization"
-                    active={sortCriteria === 'Organization'}
+                    eventKey="Name Z-A"
+                    active={sortCriteria === 'Name Z-A'}
+                    id="sortButton"
+                  >
+                    Name: Z-A
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="Organization A-Z"
+                    active={sortCriteria === 'Organization A-Z'}
                     id="sortButton"
                   >
                     Organization: A-Z
                   </Dropdown.Item>
                   <Dropdown.Item
-                    eventKey="Topic"
-                    active={sortCriteria === 'Topic'}
+                    eventKey="Organization Z-A"
+                    active={sortCriteria === 'Organization Z-A'}
+                    id="sortButton"
+                  >
+                    Organization: Z-A
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="Topic A-Z"
+                    active={sortCriteria === 'Topic A-Z'}
                     id="sortButton"
                   >
                     Topic: A-Z
                   </Dropdown.Item>
                   <Dropdown.Item
-                    eventKey="Date"
-                    active={sortCriteria === 'Date'}
+                    eventKey="Topic Z-A"
+                    active={sortCriteria === 'Topic Z-A'}
+                    id="sortButton"
+                  >
+                    Topic: Z-A
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="Date: Recent"
+                    active={sortCriteria === 'Date: Recent'}
                     id="sortButton"
                   >
                     Date: Newest-Oldest
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="Date: Old"
+                    active={sortCriteria === 'Date: Old'}
+                    id="sortButton"
+                  >
+                    Date: Oldest-Newest
                   </Dropdown.Item>
                 </DropdownButton>
               </Col>
