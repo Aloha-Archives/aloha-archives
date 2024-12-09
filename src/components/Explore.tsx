@@ -29,7 +29,7 @@ const Explore = () => {
           translateX: [0, textWrapper.getBoundingClientRect().width + 10],
           easing: 'easeOutExpo',
           duration: 2500,
-          delay: 200,
+          delay: 201,
         })
         .add({
           targets: '.ml11 .letter',
