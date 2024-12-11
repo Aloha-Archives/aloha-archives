@@ -38,7 +38,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, 
         border: 'none',
         background: 'none',
         width: '100%',
-        height: '370px',
+        height: '420px',
       }}
       onClick={() => (window.location.href = `/dataset/${dataset.id}`)}
     >
@@ -52,7 +52,8 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, isFavoritesContext, 
               style={{ maxWidth: '100px', height: 'auto' }}
             />
           </Container>
-          <Card.Title className="pt-3">{dataset.name}</Card.Title>
+          <Card.Title className="pt-3 m-0">{dataset.name}</Card.Title>
+          <Card.Text className="m-0">{dataset.org}</Card.Text>
         </Card.Header>
         <Card.Body style={{ height: '28%' }}>
           <Card.Text>{dataset.description}</Card.Text>
