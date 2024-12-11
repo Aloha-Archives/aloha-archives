@@ -17,7 +17,7 @@ const NavBar: React.FC = () => {
   const pathName = usePathname();
 
   return (
-    <Navbar className="custom-navbar" expand="xl">
+    <Navbar className="custom-navbar" expand={session ? 'xl' : 'md'}>
       <Container>
         <Navbar.Brand href="/">
           <Image
