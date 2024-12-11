@@ -16,7 +16,7 @@ const NavBar: React.FC = () => {
   const role = userWithRole?.randomKey;
   const pathName = usePathname();
   return (
-    <Navbar className="custom-navbar" expand="lg">
+    <Navbar className="custom-navbar" expand="xl">
       <Container>
         <Navbar.Brand href="/">
           <Image
@@ -60,8 +60,8 @@ const NavBar: React.FC = () => {
 )}
           </Nav>
           {/* Right-aligned links */}
-          <Nav className="ms-auto d-flex align-items-center">
-            <Col>
+          <Nav className="ms-auto d-flex align-items-center flex-grow-1">
+            <Col className="d-flex flex-grow-1">
               <NavSearchBar />
             </Col>
           </Nav>

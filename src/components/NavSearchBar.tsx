@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Form, InputGroup } from 'react-bootstrap';
-import { Search } from 'react-bootstrap-icons';
+import { Container, Form, InputGroup } from 'react-bootstrap';
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -42,7 +41,7 @@ const SearchBar = () => {
 
   return (
     <Container>
-      <InputGroup>
+      <InputGroup className="nav-search-bar">
         <Form.Control
           type="text"
           value={query}
@@ -50,11 +49,6 @@ const SearchBar = () => {
           onKeyDown={handleEnterPress}
           placeholder="Search for datasets..."
         />
-        <InputGroup.Text>
-          <Button id="searchIcon" onClick={handleSearch}>
-            <Search />
-          </Button>
-        </InputGroup.Text>
       </InputGroup>
     </Container>
   );
