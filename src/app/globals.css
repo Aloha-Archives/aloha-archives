@@ -332,5 +332,6 @@ footer {
 
 .nav-search-bar {
   flex-grow: 1;
-  min-width: 140px !important; /* Minimum width for the search bar */
+  min-width: 140px;
+  max-width: 230px;
 }

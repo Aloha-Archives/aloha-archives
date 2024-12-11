@@ -1,11 +1,11 @@
-/* eslint-disable react/jsx-indent, @typescript-eslint/indent */
+/* eslint-disable react/jsx-one-expression-per-line */
 
 'use client';
 
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { Col, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { BoxArrowRight, Lock, PersonCircle, PersonFill, PersonPlusFill } from 'react-bootstrap-icons';
 import NavSearchBar from './NavSearchBar';
 
@@ -15,6 +15,7 @@ const NavBar: React.FC = () => {
   const userWithRole = session?.user as { email: string; randomKey: string };
   const role = userWithRole?.randomKey;
   const pathName = usePathname();
+
   return (
     <Navbar className="custom-navbar" expand="xl">
       <Container>
@@ -36,65 +37,43 @@ const NavBar: React.FC = () => {
             <Nav.Link id="datasets-nav" href="/results" key="results" active={pathName === '/results'}>
               Datasets
             </Nav.Link>
-            {currentUser
-              ? [
-                  <Nav.Link id="favorites" href="/favorites" key="favorites" active={pathName === '/favorites'}>
-                    Favorites
-                  </Nav.Link>,
-                  <Nav.Link id="favorites" href="/recommended" key="recommended" active={pathName === '/recommended'}>
-                    Recommended
-                  </Nav.Link>,
-                ]
-              : ''}
-            {currentUser && role === 'ADMIN' ? (
+            {currentUser && (
               <>
-                {/* <Nav.Link id="admin-stuff-nav" href="/admin" key="admin" active={pathName === '/admin'}>
-                Admin
-              </Nav.Link> */}
-                <Nav.Link id="manage-datasets-nav" href="/manage-datasets" key="/manage-datasets" active={pathName === '/manage-datasets'}>
-                  Manage Datasets
+                <Nav.Link id="favorites" href="/favorites" key="favorites" active={pathName === '/favorites'}>
+                  Favorites
+                </Nav.Link>
+                <Nav.Link id="recommended" href="/recommended" key="recommended" active={pathName === '/recommended'}>
+                  Recommended
                 </Nav.Link>
               </>
-) : (
-  ''
-)}
+            )}
+            {currentUser && role === 'ADMIN' && (
+              <Nav.Link id="manage-datasets-nav" href="/manage-datasets" key="/manage-datasets" active={pathName === '/manage-datasets'}>
+                Manage Datasets
+              </Nav.Link>
+            )}
           </Nav>
-          {/* Right-aligned links */}
-          <Nav className="ms-auto d-flex align-items-center flex-grow-1">
-            <Col className="d-flex flex-grow-1">
-              <NavSearchBar />
-            </Col>
-          </Nav>
-          <Nav>
+          <Nav className="ms-auto d-flex align-items-center">
+            <NavSearchBar />
             {session ? (
-              <NavDropdown id="login-dropdown" title={currentUser}>
+              <NavDropdown id="login-dropdown" title={currentUser} className="ms-3">
                 <NavDropdown.Item id="profile-nav" href="/profile">
-                  <PersonCircle />
-                  {' '}
-                  My Profile
+                  <PersonCircle /> My Profile
                 </NavDropdown.Item>
                 <NavDropdown.Item id="login-dropdown-sign-out" href="/api/auth/signout">
-                  <BoxArrowRight />
-                  {' '}
-                  Sign Out
+                  <BoxArrowRight /> Sign Out
                 </NavDropdown.Item>
                 <NavDropdown.Item id="login-dropdown-change-password" href="/auth/change-password">
-                  <Lock />
-                  {' '}
-                  Change Password
+                  <Lock /> Change Password
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <NavDropdown id="login-dropdown" title="Login">
+              <NavDropdown id="login-dropdown" title="Login" className="ms-3">
                 <NavDropdown.Item id="login-dropdown-sign-in" href="/auth/signin">
-                  <PersonFill />
-                  {' '}
-                  Sign In
+                  <PersonFill /> Sign In
                 </NavDropdown.Item>
                 <NavDropdown.Item id="login-dropdown-sign-up" href="/auth/signup">
-                  <PersonPlusFill />
-                  {' '}
-                  Sign Up
+                  <PersonPlusFill /> Sign Up
                 </NavDropdown.Item>
               </NavDropdown>
             )}
