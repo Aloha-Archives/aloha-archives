@@ -329,3 +329,9 @@ footer {
   display: inline-block;
   line-height: 1em;
 }
+
+.nav-search-bar {
+  flex-grow: 1;
+  min-width: 140px;
+  max-width: 230px;
+}
