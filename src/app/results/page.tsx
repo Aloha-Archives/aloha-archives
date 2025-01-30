@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import DatasetCard from '@/components/DatasetCard';
+import debounce from 'lodash/debounce';
 
 const SearchBar = dynamic(() => import('@/components/SearchBar'), { ssr: false });
 
@@ -17,68 +18,51 @@ const ResultsPage = () => {
   const [orgs, setOrgs] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortCriteria, setSortCriteria] = useState<string>('Name');
+  const [showFilters, setShowFilters] = useState(false);
 
+  const toggleFilters = () => setShowFilters(!showFilters);
   const toggleMenu1 = () => setIsOpen1(!isOpen1);
   const toggleMenu2 = () => setIsOpen2(!isOpen2);
 
-  const fetchTopics = async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const response = await fetch('/api/topics');
-      const data = await response.json();
-      setTopics(data);
-    } catch (error) {
-      console.error('Failed to fetch topics:', error);
-    }
-  };
+      setIsLoading(true);
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('search') || '';
+      const topic = urlParams.get('topic') || '';
+      const org = urlParams.get('org') || '';
+      const sort = urlParams.get('sort')?.toLowerCase() || 'name';
 
-  const fetchOrgs = async () => {
-    try {
-      const response = await fetch('/api/orgs');
-      const data = await response.json();
-      console.log('Fetched organizations:', data); // Added logging to inspect org data
-      setOrgs(data);
-    } catch (error) {
-      console.error('Failed to fetch organizations:', error);
-    }
-  };
+      // Convert sort criteria to API format
+      let [sortField, order] = ['name', 'asc'];
+      if (sort.includes('z-a') || sort.includes('recent')) {
+        order = 'desc';
+      }
+      if (sort.includes('organization')) {
+        sortField = 'organization';
+      } else if (sort.includes('topic')) {
+        sortField = 'topic';
+      } else if (sort.includes('date')) {
+        sortField = 'date';
+      }
 
-  const fetchDatasets = async (query: string, topic: string, org: string, sortBy: string) => {
-    try {
-      const response = await fetch('/api/datasets');
-      const data = await response.json();
-      const filteredData = data.filter(
-        (item: { name: string; topic: string; org: string; }) => (item.name.toLowerCase().includes(query.toLowerCase())
-          || item.topic.toLowerCase().includes(query.toLowerCase()))
-          && (topic ? item.topic === topic : true)
-          && (org ? item.org === org : true),
+      const response = await fetch(
+        `/api/datasets?query=${query}&topic=${topic}&org=${org}&sort=${sortField}&order=${order}`,
       );
-      const sortedData = filteredData.sort(
-        (
-          a: { name: string; org: string; topic: string; date: string; },
-          b: { name: any; org: any; topic: any; date: string; },
-        ) => {
-          if (sortBy === 'Name') {
-            return a.name.localeCompare(b.name);
-          }
-          if (sortBy === 'Organization') {
-            return a.org.localeCompare(b.org);
-          }
-          if (sortBy === 'Topic') {
-            return a.topic.localeCompare(b.topic);
-          }
-          if (sortBy === 'Date') {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
-          }
-          return 0;
-        },
-      );
+      const data = await response.json();
 
-      setFilteredResults(sortedData);
+      setFilteredResults(data.datasets);
+      setTopics(data.topics);
+      setOrgs(data.orgs);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    } finally {
       setIsLoading(false);
-    } catch (error) {
-      console.error('Failed to fetch datasets:', error);
     }
-  };
+  }, []);
+
+  // Debounced version of fetchData for search input
+  const debouncedFetchData = debounce(fetchData, 300);
 
   const handleTopicFilter = (topic: string) => {
     const newTopic = selectedTopic === topic ? '' : topic;
@@ -94,8 +78,7 @@ const ResultsPage = () => {
       window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
     }
 
-    const query = new URLSearchParams(window.location.search).get('search') || '';
-    fetchDatasets(query, newTopic, selectedOrg, sortCriteria);
+    fetchData();
   };
 
   const handleOrgFilter = (org: string) => {
@@ -112,137 +95,124 @@ const ResultsPage = () => {
       window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
     }
 
-    const query = new URLSearchParams(window.location.search).get('search') || '';
-    const topicFromURL = new URLSearchParams(window.location.search).get('topic') || '';
-    fetchDatasets(query, topicFromURL, newOrg, sortCriteria);
+    fetchData();
   };
 
   const handleSort = (eventKey: string | null) => {
     if (!eventKey) return;
-    const criteria = eventKey;
-    setSortCriteria(criteria);
+    setSortCriteria(eventKey);
 
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set('sort', criteria);
+      urlParams.set('sort', eventKey);
       window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
     }
 
-    const sortedResults = [...filteredResults].sort((a, b) => {
-      if (criteria === 'Name A-Z') {
-        return a.name.localeCompare(b.name);
-      }
-      if (criteria === 'Name Z-A') {
-        return b.name.localeCompare(a.name);
-      }
-      if (criteria === 'Organization A-Z') {
-        return a.org.localeCompare(b.org);
-      }
-      if (criteria === 'Organization Z-A') {
-        return b.org.localeCompare(a.org);
-      }
-      if (criteria === 'Topic A-Z') {
-        return a.topic.localeCompare(b.topic);
-      }
-      if (criteria === 'Topic Z-A') {
-        return b.topic.localeCompare(a.topic);
-      }
-      if (criteria === 'Date: Recent') {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }
-      if (criteria === 'Date: Old') {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      }
-      return 0;
-    });
-    setFilteredResults(sortedResults);
+    fetchData();
   };
 
   useEffect(() => {
-    fetchTopics();
-    fetchOrgs();
-
-    const fetchData = async () => {
-      if (typeof window !== 'undefined') {
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('search') || '';
-        const topicFromURL = urlParams.get('topic') || '';
-        const orgFromURL = urlParams.get('org') || '';
-        const sortFromURL = urlParams.get('sort') || '';
-        setSelectedTopic(topicFromURL);
-        setSelectedOrg(orgFromURL);
-        setSortCriteria(sortFromURL || 'Name');
-        await fetchDatasets(query, topicFromURL, orgFromURL, sortFromURL);
-      }
-    };
-
     fetchData();
-  }, []); // Only runs once, on mount
+    // Cleanup debounced function
+    return () => {
+      debouncedFetchData.cancel();
+    };
+  }, [fetchData, debouncedFetchData]);
 
   return (
     <main>
       <Container>
         <Row className="mt-5 mb-5">
+          {/* Mobile Filters Toggle */}
+          <Col xs={12} className="d-md-none mb-3">
+            <button
+              type="button"
+              className="filters-toggle-btn"
+              onClick={toggleFilters}
+            >
+              {showFilters ? 'Hide Filters' : 'Show Filters'}
+            </button>
+          </Col>
+
           {/* Filters Sidebar */}
-          <Col md={3} className="mx-auto bg-light filter-height">
-            <Container className="mt-2">
-              <Row>
-                <h2 className="text-center">Filters</h2>
-              </Row>
+          <div
+            className={`filters-overlay ${showFilters ? 'show' : ''}`}
+            onClick={toggleFilters}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                toggleFilters();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Toggle filters overlay"
+          />
+          <Col
+            md={3}
+            className={`filters-sidebar ${showFilters ? 'show' : ''}`}
+          >
+            <div className="d-md-none text-end mb-3">
+              <button
+                type="button"
+                className="btn-close"
+                onClick={toggleFilters}
+                aria-label="Close filters"
+              />
+            </div>
+            <h2 className="text-center mb-4">Filters</h2>
 
-              {/* Topic Filter */}
-              <Row className="mb-3">
-                <button type="button" onClick={toggleMenu1} className="btn btn-primary" id="filterMenu">
-                  {isOpen1 ? 'Hide Topics' : 'Show Topics'}
-                </button>
-                {isOpen1 && (
-                  <ul className="list-group mt-2 pe-0">
-                    {topics.map((topic) => (
-                      <button
-                        type="button"
-                        id="resultsFilterButton"
-                        key={topic}
-                        className={`list-group-item ${selectedTopic === topic ? 'active' : ''}`}
-                        onClick={() => handleTopicFilter(topic)}
-                      >
-                        {topic}
-                      </button>
-                    ))}
-                  </ul>
-                )}
-              </Row>
+            {/* Topic Filter */}
+            <div className="mb-4">
+              <button type="button" onClick={toggleMenu1} className="btn" id="filterMenu">
+                {isOpen1 ? 'Hide Topics' : 'Show Topics'}
+              </button>
+              {isOpen1 && (
+                <ul className="list-group mt-2">
+                  {topics.map((topic) => (
+                    <button
+                      type="button"
+                      id="resultsFilterButton"
+                      key={topic}
+                      className={`list-group-item ${selectedTopic === topic ? 'active' : ''}`}
+                      onClick={() => handleTopicFilter(topic)}
+                    >
+                      {topic}
+                    </button>
+                  ))}
+                </ul>
+              )}
+            </div>
 
-              {/* Organization Filter */}
-              <Row className="mb-3">
-                <button type="button" onClick={toggleMenu2} className="btn btn-primary" id="filterMenu">
-                  {isOpen2 ? 'Hide Organizations' : 'Show Organizations'}
-                </button>
-                {isOpen2 && (
-                  <ul className="list-group mt-2 pe-0">
-                    {orgs.map((org) => (
-                      <button
-                        type="button"
-                        id="resultsFilterButton"
-                        key={org}
-                        className={`list-group-item ${selectedOrg === org ? 'active' : ''}`}
-                        onClick={() => handleOrgFilter(org)}
-                      >
-                        {org}
-                      </button>
-                    ))}
-                  </ul>
-                )}
-              </Row>
-            </Container>
+            {/* Organization Filter */}
+            <div className="mb-4">
+              <button type="button" onClick={toggleMenu2} className="btn" id="filterMenu">
+                {isOpen2 ? 'Hide Organizations' : 'Show Organizations'}
+              </button>
+              {isOpen2 && (
+                <ul className="list-group mt-2">
+                  {orgs.map((org) => (
+                    <button
+                      type="button"
+                      id="resultsFilterButton"
+                      key={org}
+                      className={`list-group-item ${selectedOrg === org ? 'active' : ''}`}
+                      onClick={() => handleOrgFilter(org)}
+                    >
+                      {org}
+                    </button>
+                  ))}
+                </ul>
+              )}
+            </div>
           </Col>
 
           {/* Results Area */}
-          <Col md={9} className="mx-auto">
-            <Row className="align-items-center">
-              <Col md={10}>
+          <Col md={9}>
+            <div className="search-controls">
+              <div className="flex-grow-1">
                 <SearchBar />
-              </Col>
-              <Col md={2}>
+              </div>
+              <div style={{ minWidth: '200px' }}>
                 <DropdownButton
                   onSelect={(eventKey) => handleSort(eventKey)}
                   title={`Sort By: ${sortCriteria}`}
@@ -305,30 +275,29 @@ const ResultsPage = () => {
                     Date: Oldest-Newest
                   </Dropdown.Item>
                 </DropdownButton>
-              </Col>
-            </Row>
-            <Row>
-              <h1 className="ms-3 text-contrast">Results</h1>
-            </Row>
-            <Row>
-              {isLoading && <p className="ps-5 text-contrast">Loading...</p>}
-              {!isLoading && filteredResults.length > 0 && (
-                filteredResults.map((item) => {
-                  console.log(item);
-                  return (
+              </div>
+            </div>
+
+            {isLoading ? (
+              <div className="text-center mt-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <Row>
+                {filteredResults.map((dataset) => (
+                  <Col key={dataset.id} lg={6} className="mb-4">
                     <DatasetCard
-                      dataset={item}
-                      isFavoritesContext={item.isFavoritesContext}
-                      userId={item.userId}
-                      onRemoveFromFavorites={item.onRemoveFromFavorites}
+                      dataset={dataset}
+                      userId=""
+                      isFavoritesContext={false}
+                      onRemoveFromFavorites={() => {}}
                     />
-                  );
-                })
-              )}
-              {!isLoading && filteredResults.length === 0 && (
-                <p className="ps-5 text-contrast">No results found.</p>
-              )}
-            </Row>
+                  </Col>
+                ))}
+              </Row>
+            )}
           </Col>
         </Row>
       </Container>

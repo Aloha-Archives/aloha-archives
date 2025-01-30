@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Carousel, Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import DatasetCard from './DatasetCard';
 
 interface Dataset {
@@ -17,70 +17,115 @@ interface Dataset {
 
 const TrendingDatasets: React.FC = () => {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDatasets = async () => {
       try {
-        const response = await fetch(`/api/datasets?timestamp=${Date.now()}`, {
-          cache: 'no-store',
-        });
-        const data = await response.json();
-        console.log('Fetched datasets:', data);
-        setDatasets(data);
+        const response = await fetch('/api/datasets');
+        const { datasets: allDatasets } = await response.json();
+        const sortedDatasets = [...allDatasets]
+          .sort((a, b) => b.viewCount - a.viewCount)
+          .slice(0, 3);
+        setDatasets(sortedDatasets);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching datasets:', error);
+        setIsLoading(false);
       }
     };
 
     fetchDatasets();
   }, []);
 
-  const topDatasets = datasets
-    .sort((a, b) => b.viewCount - a.viewCount)
-    .slice(0, 6);
+  useEffect(() => {
+    if (datasets.length === 0) {
+      return () => {};
+    }
 
-  const groupedData = [];
-  for (let i = 0; i < topDatasets.length; i += 3) {
-    groupedData.push(topDatasets.slice(i, i + 3));
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % datasets.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [datasets.length]);
+
+  const handlePrevClick = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + datasets.length) % datasets.length,
+    );
+  };
+
+  const handleNextClick = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % datasets.length);
+  };
+
+  if (isLoading) {
+    return (
+      <Container className="my-5 pt-5">
+        <h2 className="text-center mb-4 text-contrast">Trending Datasets</h2>
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+
+  if (datasets.length === 0) {
+    return null;
   }
 
   return (
-    <div
-      className="trending-section"
-      style={{
-        marginTop: '50px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <h3
-        className="text-contrast"
-        style={{ textAlign: 'center', marginBottom: '1rem', color: 'seashell' }}
-      >
-        Trending Datasets
-      </h3>
-      <Carousel controls indicators={false} interval={5000} pause="hover">
-        {groupedData.map((group) => (
-          <Carousel.Item key={group[0]?.id || `group-${Math.random()}`}>
-            <Container style={{ minHeight: '250px' }}>
-              <Row className="justify-content-center text-center">
-                {group.map((dataset) => (
-                  <Col key={dataset.id} md={group.length === 2 ? 6 : 4}>
-                    <DatasetCard
-                      dataset={dataset}
-                      userId=""
-                      isFavoritesContext={false}
-                      onRemoveFromFavorites={() => {}}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            </Container>
-          </Carousel.Item>
-        ))}
-      </Carousel>
-    </div>
+    <Container className="my-5">
+      <h2 className="text-center mb-5 text-contrast">Trending Datasets</h2>
+      <Row className="justify-content-center">
+        <Col xs={12}>
+          <div className="carousel-3d-container mt-5">
+            <div
+              className="carousel-3d"
+              style={{
+                transform: `rotateY(-${currentIndex * 120}deg)`,
+              }}
+            >
+              {datasets.map((dataset, index) => (
+                <div
+                  key={dataset.id}
+                  className={`carousel-3d-item ${
+                    index === currentIndex ? 'active' : ''
+                  }`}
+                >
+                  <DatasetCard
+                    dataset={dataset}
+                    userId=""
+                    isFavoritesContext={false}
+                    onRemoveFromFavorites={() => {}}
+                  />
+                </div>
+              ))}
+            </div>
+            <button
+              type="button"
+              className="carousel-3d-prev"
+              onClick={handlePrevClick}
+              aria-label="Previous dataset"
+            >
+              &#8249;
+            </button>
+            <button
+              type="button"
+              className="carousel-3d-next"
+              onClick={handleNextClick}
+              aria-label="Next dataset"
+            >
+              &#8250;
+            </button>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

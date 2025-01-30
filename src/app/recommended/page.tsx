@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { useSession } from 'next-auth/react';
 import DatasetCard from '@/components/DatasetCard';
@@ -27,7 +27,7 @@ const RecommendationsDisplay = () => {
     businessDecisionMaker: 'Business Decision Maker',
   };
 
-  const fetchPersonaAndRecommendations = async () => {
+  const fetchPersonaAndRecommendations = useCallback(async () => {
     if (!session?.user?.email) {
       console.error('User email not found in session');
       return;
@@ -57,13 +57,13 @@ const RecommendationsDisplay = () => {
     } catch (error) {
       console.error('Error fetching persona or recommendations:', error);
     }
-  };
+  }, [session]);
 
   useEffect(() => {
     if (session) {
       fetchPersonaAndRecommendations();
     }
-  }, [session]);
+  }, [session, fetchPersonaAndRecommendations]);
 
   const handleQuizSubmit = () => {
     // Refresh persona and recommendations when the quiz is submitted
