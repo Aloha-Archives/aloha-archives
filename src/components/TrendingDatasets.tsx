@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import DatasetCard from './DatasetCard';
+import styles from './TrendingDatasets.module.css';
 
 interface Dataset {
   id: string;
@@ -18,7 +19,24 @@ interface Dataset {
 const TrendingDatasets: React.FC = () => {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [totalRotation, setTotalRotation] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  const rotateToNextDataset = useCallback(() => {
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = (prevIndex + 1) % datasets.length;
+      return nextIndex;
+    });
+    setTotalRotation((prev) => prev + 120);
+  }, [datasets.length]);
+
+  const rotateToPrevDataset = useCallback(() => {
+    setCurrentIndex((prevIndex) => {
+      const prevDatasetIndex = (prevIndex - 1 + datasets.length) % datasets.length;
+      return prevDatasetIndex;
+    });
+    setTotalRotation((prev) => prev - 120);
+  }, [datasets.length]);
 
   useEffect(() => {
     const fetchDatasets = async () => {
@@ -28,8 +46,10 @@ const TrendingDatasets: React.FC = () => {
         const sortedDatasets = [...allDatasets]
           .sort((a, b) => b.viewCount - a.viewCount)
           .slice(0, 3);
+
         setDatasets(sortedDatasets);
         setIsLoading(false);
+        setCurrentIndex(0);
       } catch (error) {
         console.error('Error fetching datasets:', error);
         setIsLoading(false);
@@ -40,26 +60,14 @@ const TrendingDatasets: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (datasets.length === 0) {
-      return () => {};
-    }
+    if (datasets.length === 0) return;
 
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % datasets.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [datasets.length]);
-
-  const handlePrevClick = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + datasets.length) % datasets.length,
-    );
-  };
-
-  const handleNextClick = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % datasets.length);
-  };
+    const interval = setInterval(rotateToNextDataset, 5000);
+    // eslint-disable-next-line consistent-return
+    return () => {
+      clearInterval(interval);
+    };
+  }, [datasets.length, rotateToNextDataset]);
 
   if (isLoading) {
     return (
@@ -87,15 +95,21 @@ const TrendingDatasets: React.FC = () => {
             <div
               className="carousel-3d"
               style={{
-                transform: `rotateY(-${currentIndex * 120}deg)`,
+                transform: `rotateY(-${totalRotation}deg)`,
+                transition: 'transform 1.5s ease',
               }}
             >
-              {datasets.map((dataset, index) => (
+              {datasets.map((dataset) => (
                 <div
                   key={dataset.id}
-                  className={`carousel-3d-item ${
-                    index === currentIndex ? 'active' : ''
-                  }`}
+                  className={`
+                    carousel-3d-item 
+                    ${styles.carouselItem}
+                  `}
+                  style={{
+                    opacity: dataset.id === datasets[currentIndex].id ? 1 : 0.5,
+                    transition: 'opacity 0.5s ease',
+                  }}
                 >
                   <DatasetCard
                     dataset={dataset}
@@ -109,7 +123,7 @@ const TrendingDatasets: React.FC = () => {
             <button
               type="button"
               className="carousel-3d-prev"
-              onClick={handlePrevClick}
+              onClick={rotateToPrevDataset}
               aria-label="Previous dataset"
             >
               &#8249;
@@ -117,7 +131,7 @@ const TrendingDatasets: React.FC = () => {
             <button
               type="button"
               className="carousel-3d-next"
-              onClick={handleNextClick}
+              onClick={rotateToNextDataset}
               aria-label="Next dataset"
             >
               &#8250;
