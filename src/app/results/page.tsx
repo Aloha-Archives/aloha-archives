@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { Col, Container, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 import DatasetCard from '@/components/DatasetCard';
@@ -61,10 +61,57 @@ const ResultsPage = () => {
     }
   }, []);
 
-  // Debounced version of fetchData for search input
-  const debouncedFetchData = debounce(fetchData, 300);
+  const debouncedFetchRef = useRef<ReturnType<typeof debounce>>();
 
-  const handleTopicFilter = (topic: string) => {
+  // Create debouncedFetchData with useCallback to maintain reference
+  const debouncedFetchData = useCallback(() => {
+    if (!debouncedFetchRef.current) {
+      debouncedFetchRef.current = debounce(
+        async () => {
+          try {
+            setIsLoading(true);
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('search') || '';
+            const topic = urlParams.get('topic') || '';
+            const org = urlParams.get('org') || '';
+            const sort = urlParams.get('sort')?.toLowerCase() || 'name';
+
+            // Convert sort criteria to API format
+            let [sortField, order] = ['name', 'asc'];
+            if (sort.includes('z-a') || sort.includes('recent')) {
+              order = 'desc';
+            }
+            if (sort.includes('organization')) {
+              sortField = 'organization';
+            } else if (sort.includes('topic')) {
+              sortField = 'topic';
+            } else if (sort.includes('date')) {
+              sortField = 'date';
+            }
+
+            const response = await fetch(
+              `/api/datasets?query=${query}&topic=${topic}&org=${org}&sort=${sortField}&order=${order}`,
+            );
+            const data = await response.json();
+
+            setFilteredResults(data.datasets);
+            setTopics(data.topics);
+            setOrgs(data.orgs);
+          } catch (error) {
+            console.error('Failed to fetch data:', error);
+          } finally {
+            setIsLoading(false);
+          }
+        },
+        300,
+      );
+    }
+    debouncedFetchRef.current?.();
+  }, [setFilteredResults, setTopics, setOrgs, setIsLoading]);
+
+  useEffect(() => debouncedFetchRef.current?.cancel(), []);
+
+  const handleTopicFilter = useCallback((topic: string) => {
     const newTopic = selectedTopic === topic ? '' : topic;
     setSelectedTopic(newTopic);
 
@@ -78,10 +125,10 @@ const ResultsPage = () => {
       window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
     }
 
-    fetchData();
-  };
+    debouncedFetchData();
+  }, [selectedTopic, debouncedFetchData]);
 
-  const handleOrgFilter = (org: string) => {
+  const handleOrgFilter = useCallback((org: string) => {
     const newOrg = selectedOrg === org ? '' : org;
     setSelectedOrg(newOrg);
 
@@ -95,10 +142,10 @@ const ResultsPage = () => {
       window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
     }
 
-    fetchData();
-  };
+    debouncedFetchData();
+  }, [selectedOrg, debouncedFetchData]);
 
-  const handleSort = (eventKey: string | null) => {
+  const handleSort = useCallback((eventKey: string | null) => {
     if (!eventKey) return;
     setSortCriteria(eventKey);
 
@@ -108,16 +155,13 @@ const ResultsPage = () => {
       window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
     }
 
-    fetchData();
-  };
+    debouncedFetchData();
+  }, [debouncedFetchData]);
 
   useEffect(() => {
     fetchData();
-    // Cleanup debounced function
-    return () => {
-      debouncedFetchData.cancel();
-    };
-  }, [fetchData, debouncedFetchData]);
+    return () => debouncedFetchRef.current?.cancel();
+  }, [fetchData]);
 
   return (
     <main>
