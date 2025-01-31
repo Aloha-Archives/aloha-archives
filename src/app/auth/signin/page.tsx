@@ -1,26 +1,39 @@
 'use client';
 
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Row, Alert } from 'react-bootstrap';
 
 /** The sign in page. */
 const SignIn = () => {
+  const [error, setError] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+
     const target = e.target as typeof e.target & {
       email: { value: string };
       password: { value: string };
     };
     const email = target.email.value;
     const password = target.password.value;
-    const result = await signIn('credentials', {
-      callbackUrl: '/favorites',
-      email,
-      password,
-    });
+    
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        callbackUrl: '/favorites',
+        email,
+        password,
+      });
 
-    if (result?.error) {
-      console.error('Sign in failed: ', result.error);
+      if (result?.error) {
+        console.error('Sign in failed: ', result.error);
+        setError('Invalid email or password. Please try again.');
+      }
+    } catch (err) {
+      console.error('Unexpected error during sign in:', err);
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 
@@ -30,16 +43,34 @@ const SignIn = () => {
         <Row className="justify-content-center">
           <Col xs={5}>
             <h1 className="text-center text-contrast">Sign In</h1>
+            {error && (
+              <Alert 
+                variant="danger" 
+                onClose={() => setError(null)} 
+                dismissible
+                className="mt-3"
+              >
+                {error}
+              </Alert>
+            )}
             <Card>
               <Card.Body>
                 <Form method="post" onSubmit={handleSubmit}>
-                  <Form.Group controlId="formBasicEmail">
+                  <Form.Group controlId="formBasicEmail" className="mb-3">
                     <Form.Label>Email</Form.Label>
-                    <input name="email" type="text" className="form-control" />
+                    <input 
+                      name="email" 
+                      type="text" 
+                      className={`form-control ${error ? 'is-invalid' : ''}`} 
+                    />
                   </Form.Group>
-                  <Form.Group>
+                  <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
-                    <input name="password" type="password" className="form-control" />
+                    <input 
+                      name="password" 
+                      type="password" 
+                      className={`form-control ${error ? 'is-invalid' : ''}`} 
+                    />
                   </Form.Group>
                   <Button type="submit" className="mt-3 custom-btn">
                     Sign In

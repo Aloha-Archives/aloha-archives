@@ -1,8 +1,7 @@
-import { Container } from 'react-bootstrap';
+import InfoPageLayout from '@/components/InfoPageLayout';
 
 const PrivacyPolicyText = () => (
-  <Container className="info-container">
-    <h1>Privacy Policy</h1>
+  <InfoPageLayout title="Privacy Policy">
     <p>
       By visiting and using this website, its subpages, and content, you are agreeing to our Terms of Access and Use.
     </p>
@@ -105,7 +104,7 @@ const PrivacyPolicyText = () => (
       <a href="https://www.hawaii.gov/oip" target="_blank" rel="noopener noreferrer">www.hawaii.gov/oip</a>
       .
     </p>
-  </Container>
+  </InfoPageLayout>
 );
 
 export default PrivacyPolicyText;
