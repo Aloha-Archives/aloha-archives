@@ -1,31 +1,42 @@
+import React from 'react';
 import InfoPageLayout from '@/components/InfoPageLayout';
 
 const ContactUsText = () => (
   <InfoPageLayout title="Contact Us">
-    <h2>Get in Touch</h2>
-    <p>
-      Have a question, suggestion, or need assistance? We're here to help! You can reach us at{' '}
-      <a href="mailto:alohaarchives@gmail.com" className="text-primary">alohaarchives@gmail.com</a>.
-    </p>
-
-    <h2>Quick Response Form</h2>
-    <p>
-      For faster assistance, please use our contact form below. We'll get back to you as soon as possible.
-    </p>
-
-    <div className="d-flex justify-content-center mt-4">
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSf9vFMqi9qQ-Iirv3w-TZXms1KC9UKVVoRt-esB84WGYa_FDw/viewform?embedded=true"
-        width="100%"
-        height={1285}
-        style={{ maxWidth: '640px' }}
-        frameBorder="0"
-        marginHeight={0}
-        marginWidth={0}
-        title="Contact Us Form"
-      >
-        Loading…
-      </iframe>
+    <div className="contact-us-text">
+      <p>
+        We&apos;d love to hear from you! Whether you&apos;re a researcher looking to share a dataset,
+        a student seeking collaboration, or just curious about our platform,
+        don&apos;t hesitate to reach out.
+      </p>
+      <h2>Get in Touch</h2>
+      <p>
+        Email us at
+        {' '}
+        <a
+          href="mailto:alohaarchives@gmail.com"
+          className="text-blue-600 hover:underline"
+        >
+          alohaarchives@gmail.com
+        </a>
+        . We aim to respond to all inquiries within 2-3 business days.
+      </p>
+      <h2>Connect with Us</h2>
+      <p>
+        Follow our journey and stay updated on the latest developments:
+      </p>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/ics-314-team-4/aloha-archives"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            GitHub Repository
+          </a>
+        </li>
+      </ul>
     </div>
   </InfoPageLayout>
 );

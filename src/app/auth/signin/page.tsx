@@ -18,7 +18,7 @@ const SignIn = () => {
     };
     const email = target.email.value;
     const password = target.password.value;
-    
+
     try {
       const result = await signIn('credentials', {
         redirect: false,
@@ -44,9 +44,9 @@ const SignIn = () => {
           <Col xs={5}>
             <h1 className="text-center text-contrast">Sign In</h1>
             {error && (
-              <Alert 
-                variant="danger" 
-                onClose={() => setError(null)} 
+              <Alert
+                variant="danger"
+                onClose={() => setError(null)}
                 dismissible
                 className="mt-3"
               >
@@ -58,18 +58,18 @@ const SignIn = () => {
                 <Form method="post" onSubmit={handleSubmit}>
                   <Form.Group controlId="formBasicEmail" className="mb-3">
                     <Form.Label>Email</Form.Label>
-                    <input 
-                      name="email" 
-                      type="text" 
-                      className={`form-control ${error ? 'is-invalid' : ''}`} 
+                    <input
+                      name="email"
+                      type="text"
+                      className={`form-control ${error ? 'is-invalid' : ''}`}
                     />
                   </Form.Group>
                   <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
-                    <input 
-                      name="password" 
-                      type="password" 
-                      className={`form-control ${error ? 'is-invalid' : ''}`} 
+                    <input
+                      name="password"
+                      type="password"
+                      className={`form-control ${error ? 'is-invalid' : ''}`}
                     />
                   </Form.Group>
                   <Button type="submit" className="mt-3 custom-btn">
