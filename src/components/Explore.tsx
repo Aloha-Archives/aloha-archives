@@ -70,7 +70,7 @@ const Explore = () => {
           <h1 className="ml11 fs-4 text-contrast" style={{ color: 'seashell' }}>
             <span className="text-wrapper">
               <span className="line line1" />
-              <span className="letters" style={{ letterSpacing: '0.1em' }}>Hawai&lsquo;i&apos;s data, your way—simple, smart, visual.</span>
+              <span className="letters" style={{ letterSpacing: '0.1em' }}>Hawai&lsquo;i&apos;s data, your way—simple, smart, visual</span>
             </span>
           </h1>
         </Col>
